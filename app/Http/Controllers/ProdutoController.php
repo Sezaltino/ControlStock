@@ -124,7 +124,7 @@ class ProdutoController extends Controller
 
         // Redireciona de volta com uma mensagem de sucesso
         if ($stock == '1') {
-            return redirect()->route('produtos.stock')->with('success', 'Produto removido com sucesso!');
+            return redirect()->route('produtos.stock.index')->with('success', 'Produto removido com sucesso!');
         }
         else {
             return redirect()->route('produtos.index')->with('success', 'Produto removido com sucesso!');

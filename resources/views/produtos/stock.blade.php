@@ -30,7 +30,7 @@
                     <td>{{ $produto->descricao }}</td>
                     <td>
                         <a href="{{ route('produtos.edit', $produto->id) }}" class="btn btn-warning">Editar</a>
-                        <form action="{{ route('produtos.destroy', ['id' => $produto->id, 'stock' => '1']) }}" method="POST" style="display:inline;" onsubmit="return confirm('Tem certeza que deseja remover este produto?');">                            @csrf
+                        <form action="{{ route('produtos.stock.destroy', ['id' => $produto->id, 'stock' => '1']) }}" method="POST" style="display:inline;" onsubmit="return confirm('Tem certeza que deseja remover este produto?');">                            @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger">Deletar</button>
                         </form>
