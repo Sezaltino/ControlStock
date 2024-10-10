@@ -40,4 +40,38 @@
             @endforeach
         </tbody>
     </table>
+        <!-- Script SweetAlert para confirmação -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const deleteButtons = document.querySelectorAll('.btn-danger');
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault(); // Impede o envio imediato do formulário
+                    const form = this.closest('form');
+
+                    Swal.fire({
+                        title: "Tem certeza?",
+                        text: "Você não poderá reverter esta ação!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Sim, deletar!",
+                        cancelButtonText: "Cancelar"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            Swal.fire({
+                                title: "Deletado!",
+                                text: "O produto foi deletado.",
+                                icon: "success"
+                            }).then(() => {
+                                form.submit(); // Submete o formulário após a confirmação
+                            });
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 @endsection

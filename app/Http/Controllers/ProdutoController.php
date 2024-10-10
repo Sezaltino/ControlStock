@@ -47,7 +47,7 @@ class ProdutoController extends Controller
         $ids = Produto::pluck('identificador')->toArray();
         $idProduct = $request->identificador;
 
-        if (in_array($idProduct, $ids)) {
+        if (in_array($idProduct, $ids) && $idProduct != null) {
             return redirect()->route('produtos.index')->with('fail', 'Identificador já existente!'); 
         }
         else {
