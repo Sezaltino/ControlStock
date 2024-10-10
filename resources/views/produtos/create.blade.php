@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('layouts.app')
 
 @section('content')
     <h1>Adicionar Produto</h1>
@@ -46,6 +46,6 @@
             <input type="text" class="form-control" id="descricao" name="descricao" value="{{ old('descricao') }}" required>
         </div>
         
-        <button type="submit" class="btn btn-success">Adicionar Produto</button>
+        <button type="submit" class="btn btn-success mt-5">Adicionar Produto</button>
     </form>
 @endsection

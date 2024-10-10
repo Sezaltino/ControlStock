@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProdutoController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,13 +16,10 @@ use App\Http\Controllers\ProdutoController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/produtos');
 });
 
-Route::get('/produtos/stock', [ProdutoController::class, 'stock'])->name('produtos.stock');
-Route::resource('produtos', ProdutoController::class);
-Route::delete('/produtos/{id}/{stock}', [ProdutoController::class, 'destroy'])->name('produtos.destroy');
-
-
-
-
+Route::get('/produtos/stock', [ProdutoController::class, 'stock'])->name('produtos.stock.index')->middleware('auth');
+Route::resource('produtos', ProdutoController::class)->middleware('auth');
+Route::delete('/produtos/{id}/{stock}', [ProdutoController::class, 'destroy'])->name('produtos.stock.destroy')->middleware('auth');
+Auth::routes();

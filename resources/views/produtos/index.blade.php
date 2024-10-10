@@ -1,10 +1,10 @@
-@extends('layout')
+@extends('layouts.app')
 
 @section('content')
 
     <h1>Lista de Produtos</h1>
     <a href="{{ route('produtos.create') }}" class="btn btn-primary">Adicionar Produto</a>
-    <a href="{{ route('produtos.stock')}}" class="btn btn-warning">Stock</a>
+    <a href="{{ route('produtos.stock.index')}}" class="btn btn-warning">Stock</a>
     <table class="table">
         <thead>
             <tr>
@@ -31,7 +31,7 @@
                         <a href="{{ route('produtos.edit', $produto->id) }}" class="btn btn-warning">Editar</a>
                         
                         <!-- Formulário de exclusão -->
-                        <form action="{{ route('produtos.destroy', ['id' => $produto->id, 'stock' => '0']) }}" method="POST" style="display:inline;" class="form-delete">
+                        <form action="{{ route('produtos.stock.destroy', ['id' => $produto->id, 'stock' => '0']) }}" method="POST" style="display:inline;" class="form-delete">
                             @csrf
                             @method('DELETE')
                             <button type="button" class="btn btn-danger btn-delete">Deletar</button>
