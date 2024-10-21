@@ -4,7 +4,9 @@
 
     <h1>Lista de Produtos</h1>
     <a href="{{ route('produtos.create') }}" class="btn btn-primary">Adicionar Produto</a>
+    @if(auth()->user()->hasRole('admin'))
     <a href="{{ route('produtos.stock.index')}}" class="btn btn-warning">Stock</a>
+    @endif
     <table class="table">
         <thead>
             <tr>
