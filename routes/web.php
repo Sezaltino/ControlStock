@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProdutoController;
+use App\Http\Controllers\UserController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +21,26 @@ Route::get('/', function () {
 });
 
 
-Route::get('/produtos/stock', [ProdutoController::class, 'stock'])->name('produtos.stock.index')->middleware('auth');
-Route::resource('produtos', ProdutoController::class)->middleware('auth');
-Route::delete('/produtos/{id}/{stock}', [ProdutoController::class, 'destroy'])->name('produtos.stock.destroy')->middleware('auth');
+Route::get('/produtos/stock', [ProdutoController::class, 'stock'])
+    ->name('produtos.stock.index')
+    ->middleware('auth');
+
+Route::resource('produtos', ProdutoController::class)
+    ->middleware('auth');
+
+Route::delete('/produtos/{id}/{stock}', [ProdutoController::class, 'destroy'])
+    ->name('produtos.stock.destroy')
+    ->middleware('auth');
+
+Route::get('/users', [UserController::class, 'index'])
+    ->name('users.index')
+    ->middleware('auth');
+
+Route::delete('/users/{id}', [UserController::class, 'destroy'])
+    ->name('users.destroy')
+    ->middleware('auth');
+    
+Route::resource('users', UserController::class)
+    ->middleware('auth');
+
 Auth::routes();

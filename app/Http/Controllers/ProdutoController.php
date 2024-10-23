@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Produto;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ProdutoController extends Controller
@@ -16,10 +17,20 @@ class ProdutoController extends Controller
         return view('produtos.index', compact('produtos'));
     }
 
+    /**
+     * Display the stock view based on the user's role.
+     */
     public function stock()
     {
         $produtos = Produto::all();
-        return view('produtos.stock', compact('produtos'));
+        $user = User::find(auth()->user()->id);
+
+        if ($user->hasRole('admin')) {
+            return view('produtos.stock', compact('produtos'));
+        }
+        else {
+            return view('produtos.index', compact('produtos'));
+        }
     }
 
     /**
