@@ -22,7 +22,7 @@ class ProdutoController extends Controller
      */
     public function stock()
     {
-        $produtos = Produto::all();
+        $produtos = Produto::paginate(5);
         $user = User::find(auth()->user()->id);
 
         if ($user->hasRole('admin')) {
