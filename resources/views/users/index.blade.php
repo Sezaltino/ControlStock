@@ -22,12 +22,20 @@
                     <td>{{ $user->email }}</td>
                     <td>{{ $user->created_at }}</td>
                     <td>{{ $user->updated_at }}</td>
-                    <td>{{ $user->roles[0]->name}}</td>
+                    @if ($user->roles->isNotEmpty())
+                        <td> 
+                        @foreach ($user->roles as $role)
+                           . {{$role->name}}
+                        @endforeach
+                        </td>
+                    @else
+                        <td>Sem Role</td>
+                    @endif
                     <td>
-                        <a href="{{ route('users.edit', $users[0]->id) }}" class="btn btn-warning">Editar</a>
+                        <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning">Editar</a>
                         
                         <!-- Formulário de exclusão -->
-                        <form action="{{ route('users.destroy', $users[0]->id) }}" method="POST" style="display:inline;" class="form-delete">
+                        <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline;" class="form-delete">
                             @csrf
                             @method('DELETE')
                             <button type="button" class="btn btn-danger btn-delete">Deletar</button>
