@@ -37,16 +37,11 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
+       
         $user = User::findOrFail($id);
-        $user->update($request->all());
-        foreach ($request as $role) {
-            if ($user->hasRoles($role->input('roles'))) {
-                $user->removeRole($role->input('roles'));
-            }
-            else {
-                $user->assignRole($role->input('roles'));
-            }
-        }
-        return redirect()->route('users.index');
+        $roles = $request->input('roles', []);
+        $user->syncRoles($roles);
+        $user->update($request->except('roles'));
+        return redirect()->route('users.index')->with('success', 'Usuário atualizado com sucesso!');
     }
 }
