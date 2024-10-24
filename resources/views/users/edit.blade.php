@@ -19,26 +19,32 @@
         
         <div class="form-group">
             <label for="identificador">Identificador</label>
-            <input type="text" class="form-control" id="identificador" name="identificador" value="{{ $user->id }}">
+            <input type="text" class="form-control" id="identificador" name="identificador" value="{{ $user->id }}" readonly>
         </div>
         <div class="form-group">
-            <label for="nome">Nome do Usuário</label>
-            <input type="text" class="form-control" id="nome" name="nome" value="{{ $user->nome }}" required>
+            <label for="name">Nome do Usuário</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ $user->name }}" required>
         </div>
 
         <div class="form-group">
             <label for="email">Email</label>
             <input type="text" class="form-control" id="email" name="email" value="{{ $user->email }}" required>
         </div>
-
         <div class="form-group">
-            <label for="role">Role</label>
-            <select type="select" class="form-control" id="role" name="role">
-                @foreach ($user->roles as $role)
-                    <option value="{{ $role->name }}">{{ $role->name }}</option>
-                @endforeach
-            </select>
+            <label for="roles">Roles</label> <br>
+
+            @foreach ($roles as $role)
+                <input
+                    type="checkbox"
+                    id="role_{{$role->id}}"
+                    name="roles[]"
+                    value="{{$role->name}}"
+                    @if($user->roles->contains($role->id)) checked @endif
+                />
+                <label for="role_{{$role->id}}">{{ $role->name }}</label><br/>
+            @endforeach
         </div>
+                    
 
         <button type="submit" class="btn btn-primary">Atualizar User</button>
     </form>
