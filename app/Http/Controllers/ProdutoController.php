@@ -11,9 +11,13 @@ class ProdutoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $produtos = Produto::paginate(5);
+        $query = $request->input('search'); // Obtém o valor da busca
+        $produtos = Produto::when($query, function ($queryBuilder) use ($query) {
+            return $queryBuilder->where('nome', 'like', "%{$query}%");
+        })->paginate(8); // Adiciona a busca e paginacao
+
         return view('produtos.index', compact('produtos'));
     }
 
@@ -140,5 +144,10 @@ class ProdutoController extends Controller
         else {
             return redirect()->route('produtos.index')->with('success', 'Produto removido com sucesso!');
         }
+    }
+
+    protected function authenticated(Request $request, $user)
+    {
+        return redirect('/dashboard');
     }
 }
