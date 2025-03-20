@@ -22,7 +22,7 @@
         </div>
 
         <div class="form-group">
-            <label for="nome">Nome do Produto</label>
+            <label for="nome">Nome do Produtos</label>
             <input type="text" class="form-control" id="nome" name="nome" value="{{ old('nome') }}" required>
         </div>
 
