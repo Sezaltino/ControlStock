@@ -31,17 +31,9 @@ class ProdutoController extends Controller
     $lowStock = $query->where('quantidade', '<=', 10)->count();
     
     // Agora refazer a consulta para paginação
-    $query = Produto::query();
-    
-    // Reaplicar o filtro de busca se fornecido
-    if ($search) {
-        $query->where('nome', 'like', "%{$search}%")
-              ->orWhere('marca', 'like', "%{$search}%")
-              ->orWhere('identificador', 'like', "%{$search}%");
-    }
     
     // Paginação
-    $produtos = Produto::paginate(15)->onEachSide(1);
+    $produtos = $query->paginate(15)->onEachSide(1)->appends(request()->query());
     
     // Passar ambos os dados paginados e estatísticas totais para a view
     return view('produtos.index', compact('produtos', 'totalProdutos', 'totalEstoque', 'lowStock'));
