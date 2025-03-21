@@ -916,7 +916,7 @@
                 <!-- Stats cards -->
                 <div class="stats-cards">
                     <div class="stat-card animate-fade-up delay-100">
-                        <div class="stat-card-value">{{ $produtos->total() }}</div>
+                        <div class="stat-card-value">{{ $totalProdutos }}</div>
                         <div class="stat-card-label">Produtos Cadastrados</div>
                         <div class="stat-card-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -930,7 +930,7 @@
 
                     <div class="stat-card animate-fade-up delay-200">
                         <div class="stat-card-value">
-                            {{ $produtos->sum('quantidade') }}
+                            {{ $totalEstoque }}
                         </div>
                         <div class="stat-card-label">Itens em Estoque</div>
                         <div class="stat-card-icon">
@@ -943,11 +943,6 @@
                     </div>
 
                     <div class="stat-card animate-fade-up delay-300">
-                        @php
-                            $lowStock = $produtos->filter(function ($produto) {
-                                return $produto->quantidade <= 10;
-                            })->count();
-                        @endphp
                         <div class="stat-card-value">{{ $lowStock }}</div>
                         <div class="stat-card-label">Produtos com Estoque Baixo</div>
                         <div class="stat-card-icon">
@@ -1157,7 +1152,7 @@
 
             <!-- Paginação - AGORA SEPARADA -->
             <div class="pagination-container animate-fade-up">
-                {{ $produtos->links('pagination::bootstrap-4') }}
+                {{ $produtos->appends(request()->query())->links('pagination::bootstrap-4') }}
             </div>
         </div>
     </div>
@@ -1256,39 +1251,39 @@
 
                     // Construir HTML detalhado
                     const detailsHtml = `
-                            <div class="product-details">
-                                <div class="mb-4">
-                                    <small class="text-muted d-block mb-1">Identificador</small>
-                                    <div class="id-cell fs-5">${id}</div>
-                                </div>
-
-                                <div class="mb-4">
-                                    <small class="text-muted d-block mb-1">Nome do Produto</small>
-                                    <div class="fs-4 fw-bold">${nome}</div>
-                                </div>
-
-                                <div class="row mb-4">
-                                    <div class="col-6">
-                                        <small class="text-muted d-block mb-1">Marca</small>
-                                        <div>${marca}</div>
+                                <div class="product-details">
+                                    <div class="mb-4">
+                                        <small class="text-muted d-block mb-1">Identificador</small>
+                                        <div class="id-cell fs-5">${id}</div>
                                     </div>
-                                    <div class="col-6">
-                                        <small class="text-muted d-block mb-1">Quantidade</small>
-                                        <div class="status-badge ${quantidade.includes('0 ') ? 'status-low' : (parseInt(quantidade) > 50 ? 'status-high' : 'status-medium')}">${quantidade}</div>
+
+                                    <div class="mb-4">
+                                        <small class="text-muted d-block mb-1">Nome do Produto</small>
+                                        <div class="fs-4 fw-bold">${nome}</div>
+                                    </div>
+
+                                    <div class="row mb-4">
+                                        <div class="col-6">
+                                            <small class="text-muted d-block mb-1">Marca</small>
+                                            <div>${marca}</div>
+                                        </div>
+                                        <div class="col-6">
+                                            <small class="text-muted d-block mb-1">Quantidade</small>
+                                            <div class="status-badge ${quantidade.includes('0 ') ? 'status-low' : (parseInt(quantidade) > 50 ? 'status-high' : 'status-medium')}">${quantidade}</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-4">
+                                        <small class="text-muted d-block mb-1">Setor</small>
+                                        <div>${setor === '—' ? '<span class="text-muted">Nenhum setor definido</span>' : setor}</div>
+                                    </div>
+
+                                    <div>
+                                        <small class="text-muted d-block mb-1">Descrição</small>
+                                        <div class="p-3 bg-light rounded" style="${$('body').hasClass('dark-mode') ? 'background-color: #1f2937 !important' : ''}">${descricao || '<span class="text-muted">Sem descrição</span>'}</div>
                                     </div>
                                 </div>
-
-                                <div class="mb-4">
-                                    <small class="text-muted d-block mb-1">Setor</small>
-                                    <div>${setor === '—' ? '<span class="text-muted">Nenhum setor definido</span>' : setor}</div>
-                                </div>
-
-                                <div>
-                                    <small class="text-muted d-block mb-1">Descrição</small>
-                                    <div class="p-3 bg-light rounded" style="${$('body').hasClass('dark-mode') ? 'background-color: #1f2937 !important' : ''}">${descricao || '<span class="text-muted">Sem descrição</span>'}</div>
-                                </div>
-                            </div>
-                        `;
+                            `;
 
                     // Atualizar o conteúdo do modal
                     contentArea.html(detailsHtml);
