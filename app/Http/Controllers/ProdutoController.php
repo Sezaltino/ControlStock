@@ -12,15 +12,40 @@ class ProdutoController extends Controller
      * Display a listing of the resource.
      */
     public function index(Request $request)
-    {
-        $query = $request->input('search'); // Obtém o valor da busca
-        $produtos = Produto::when($query, function ($queryBuilder) use ($query) {
-            return $queryBuilder->where('nome', 'like', "%{$query}%");
-        })->paginate(8); // Adiciona a busca e paginacao
-
-        return view('produtos.index', compact('produtos'));
+{
+    $search = $request->input('search');
+    
+    // Consulta base que será usada tanto para as estatísticas quanto para a paginação
+    $query = Produto::query();
+    
+    // Aplicar filtro de busca se fornecido
+    if ($search) {
+        $query->where('nome', 'like', "%{$search}%")
+              ->orWhere('marca', 'like', "%{$search}%")
+              ->orWhere('identificador', 'like', "%{$search}%");
     }
-
+    
+    // Obter estatísticas ANTES da paginação
+    $totalProdutos = $query->count();
+    $totalEstoque = $query->sum('quantidade');
+    $lowStock = $query->where('quantidade', '<=', 10)->count();
+    
+    // Agora refazer a consulta para paginação
+    $query = Produto::query();
+    
+    // Reaplicar o filtro de busca se fornecido
+    if ($search) {
+        $query->where('nome', 'like', "%{$search}%")
+              ->orWhere('marca', 'like', "%{$search}%")
+              ->orWhere('identificador', 'like', "%{$search}%");
+    }
+    
+    // Paginação
+    $produtos = Produto::paginate(15)->onEachSide(1);
+    
+    // Passar ambos os dados paginados e estatísticas totais para a view
+    return view('produtos.index', compact('produtos', 'totalProdutos', 'totalEstoque', 'lowStock'));
+}
     /**
      * Display the stock view based on the user's role.
      */
