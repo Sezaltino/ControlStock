@@ -14,6 +14,7 @@ class Produto extends Model
         'marca',
         'setor',
         'descricao',
+        'status'
     ];
 }
 

@@ -39,8 +39,11 @@ Route::get('/users', [UserController::class, 'index'])
 Route::delete('/users/{id}', [UserController::class, 'destroy'])
     ->name('users.destroy')
     ->middleware('auth');
-    
+
 Route::resource('users', UserController::class)
     ->middleware('auth');
+
+Route::get('/produtos/{id}/add-to-stock', [ProdutoController::class, 'addToStock'])->name('produtos.add.to.stock');
+
 
 Auth::routes();
