@@ -9,7 +9,7 @@
             --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             --box-shadow-soft: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
             --box-shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            
+
             /* Light mode variables */
             --light-bg: #ffffff;
             --light-text: #374151;
@@ -17,7 +17,7 @@
             --light-border: rgba(229, 231, 235, 0.5);
             --light-input-bg: #ffffff;
             --light-card-bg: #ffffff;
-            
+
             /* Dark mode variables */
             --dark-bg: #121212;
             --dark-surface: #1e1e1e;
@@ -114,7 +114,8 @@
             color: #4b5563;
         }
 
-        .form-control, .form-select {
+        .form-control,
+        .form-select {
             display: block;
             width: 100%;
             padding: 0.75rem 1rem;
@@ -129,7 +130,8 @@
             transition: var(--transition-smooth);
         }
 
-        .form-control:focus, .form-select:focus {
+        .form-control:focus,
+        .form-select:focus {
             border-color: #6366f1;
             outline: 0;
             box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
@@ -300,72 +302,93 @@
             <div class="form-card animate-fade-up">
                 <form action="{{ route('produtos.store') }}" method="POST">
                     @csrf
-                    
+
                     <div class="form-section">
                         <div class="form-section-title">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z">
+                                </path>
                                 <line x1="7" y1="7" x2="7.01" y2="7"></line>
                             </svg>
                             Informações Básicas
                         </div>
-                        
+
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="identificador">Identificador</label>
-                                <input type="text" class="form-control" id="identificador" name="identificador" value="{{ old('identificador') }}" placeholder="Código único do produto (opcional)">
+                                <input type="text" class="form-control" id="identificador" name="identificador"
+                                    value="{{ old('identificador') }}" placeholder="Código único do produto (opcional)">
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="nome" class="form-control-required">Nome do Produto</label>
-                                <input type="text" class="form-control" id="nome" name="nome" value="{{ old('nome') }}" required placeholder="Ex: Teclado Mecânico RGB">
+                                <input type="text" class="form-control" id="nome" name="nome" value="{{ old('nome') }}"
+                                    required placeholder="Ex: Teclado Mecânico RGB">
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="marca" class="form-control-required">Marca</label>
-                                <input type="text" class="form-control" id="marca" name="marca" value="{{ old('marca') }}" required placeholder="Ex: Samsung, Apple, Logitech">
+                                <input type="text" class="form-control" id="marca" name="marca" value="{{ old('marca') }}"
+                                    required placeholder="Ex: Samsung, Apple, Logitech">
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="setor">Setor</label>
-                                <input type="text" class="form-control" id="setor" name="setor" value="{{ old('setor') }}" placeholder="Ex: Eletrônicos, Escritório, Informática">
+                                <input type="text" class="form-control" id="setor" name="setor" value="{{ old('setor') }}"
+                                    placeholder="Ex: Eletrônicos, Escritório, Informática">
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="form-section">
                         <div class="form-section-title">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
                                 <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
                                 <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
                             </svg>
                             Estoque e Detalhes
                         </div>
-                        
+
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="quantidade" class="form-control-required">Quantidade em Estoque</label>
-                                <input type="number" class="form-control" id="quantidade" name="quantidade" value="{{ old('quantidade') }}" required min="0" placeholder="Ex: 10">
+                                <input type="number" class="form-control" id="quantidade" name="quantidade"
+                                    value="{{ old('quantidade') }}" required min="0" placeholder="Ex: 10">
                             </div>
-                            
+
+                            <div class="form-group">
+                                <label for="status" class="form-control-required">Status do Produto</label>
+                                <select class="form-select" id="status" name="status" required>
+                                    <option value="" disabled selected>Selecione um status</option>
+                                    <option value="estoque" {{ old('status') == 'estoque' ? 'selected' : '' }}>Em Estoque
+                                    </option>
+                                    <option value="em_uso" {{ old('status') == 'em_uso' ? 'selected' : '' }}>Em Uso</option>
+                                </select>
+                            </div>
+
                             <div class="form-group-full">
                                 <label for="descricao" class="form-control-required">Descrição</label>
-                                <textarea class="form-control" id="descricao" name="descricao" rows="3" required placeholder="Detalhes sobre o produto, especificações, etc.">{{ old('descricao') }}</textarea>
+                                <textarea class="form-control" id="descricao" name="descricao" rows="3" required
+                                    placeholder="Detalhes sobre o produto, especificações, etc.">{{ old('descricao') }}</textarea>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="form-buttons">
                         <a href="{{ route('produtos.index') }}" class="btn-premium btn-premium-secondary">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
                                 <line x1="19" y1="12" x2="5" y2="12"></line>
                                 <polyline points="12 19 5 12 12 5"></polyline>
                             </svg>
                             Cancelar
                         </a>
-                        
+
                         <button type="submit" class="btn-premium btn-premium-primary">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
                                 <line x1="12" y1="5" x2="12" y2="19"></line>
                                 <line x1="5" y1="12" x2="19" y2="12"></line>
                             </svg>
