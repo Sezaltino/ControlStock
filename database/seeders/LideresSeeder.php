@@ -34,7 +34,6 @@ class LideresSeeder extends Seeder
                 DB::table('lideres')->insert([
                     'nome' => $lider['nome'],
                     'email' => $lider['email'],
-                    'telefone' => $lider['telefone'],
                     'setor_id' => $setor->id,
                     'created_at' => now(),
                     'updated_at' => now(),
