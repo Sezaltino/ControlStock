@@ -1110,14 +1110,27 @@
                         </svg>
                         Novo Produto
                     </a>
-                    <a href="{{ route('produtos.index') }}" class="btn-premium btn-premium-warning">
+                    @php
+                        $isStockPage = Route::currentRouteName() === 'produtos.stock.index';
+                    @endphp
+
+                    <a href="{{ $isStockPage ? route('produtos.index') : route('produtos.stock.index') }}"
+                        class="btn-premium btn-premium-warning">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2">
-                            <path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"></path>
-                            <path d="M4 6v12c0 1.1.9 2 2 2h14v-4"></path>
-                            <path d="M18 12a2 2 0 0 0-2 2c0 1.1.9 2 2 2h4v-4h-4z"></path>
+                            @if($isStockPage)
+                                <!-- Ícone para "Em Uso" -->
+                                <path d="M4 21V8a3 3 0 0 1 3-3h5l2 3h7a3 3 0 0 1 3 3v5"></path>
+                                <path d="M15 21h6"></path>
+                                <path d="M18 18v6"></path>
+                            @else
+                                <!-- Ícone para "Estoque" -->
+                                <path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"></path>
+                                <path d="M4 6v12c0 1.1.9 2 2 2h14v-4"></path>
+                                <path d="M18 12a2 2 0 0 0-2 2c0 1.1.9 2 2 2h4v-4h-4z"></path>
+                            @endif
                         </svg>
-                        Em Uso
+                        {{ $isStockPage ? 'Em Uso' : 'Estoque' }}
                     </a>
                 </div>
 
@@ -1248,7 +1261,8 @@
                 <ul class="pagination pagination-premium">
                     {{-- Link Anterior --}}
                     <li class="page-item {{ ($produtos->currentPage() == 1) ? 'disabled' : '' }}">
-                        <a class="page-link" href="{{ $produtos->url($produtos->currentPage() - 1) }}" aria-label="Previous">
+                        <a class="page-link" href="{{ $produtos->url($produtos->currentPage() - 1) }}"
+                            aria-label="Previous">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-width="2">
                                 <polyline points="15 18 9 12 15 6"></polyline>

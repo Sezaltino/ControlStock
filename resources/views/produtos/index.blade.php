@@ -995,15 +995,27 @@
                         </svg>
                         Novo Produto
                     </a>
-                    <a href="{{ route('produtos.index')}}" class="btn-premium btn-premium-warning ms-2">Em Uso</a>
-                    <a href="{{ route('produtos.stock.index')}}" class="btn-premium btn-premium-info ms-2">
+                    @php
+                        $isStockPage = Route::currentRouteName() === 'produtos.stock.index';
+                    @endphp
+
+                    <a href="{{ $isStockPage ? route('produtos.index') : route('produtos.stock.index') }}"
+                        class="btn-premium btn-premium-warning">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2">
-                            <path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"></path>
-                            <path d="M4 6v12c0 1.1.9 2 2 2h14v-4"></path>
-                            <path d="M18 12a2 2 0 0 0-2 2c0 1.1.9 2 2 2h4v-4h-4z"></path>
+                            @if($isStockPage)
+                                <!-- Ícone para "Em Uso" -->
+                                <path d="M4 21V8a3 3 0 0 1 3-3h5l2 3h7a3 3 0 0 1 3 3v5"></path>
+                                <path d="M15 21h6"></path>
+                                <path d="M18 18v6"></path>
+                            @else
+                                <!-- Ícone para "Estoque" -->
+                                <path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"></path>
+                                <path d="M4 6v12c0 1.1.9 2 2 2h14v-4"></path>
+                                <path d="M18 12a2 2 0 0 0-2 2c0 1.1.9 2 2 2h4v-4h-4z"></path>
+                            @endif
                         </svg>
-                        Estoque
+                        {{ $isStockPage ? 'Em Uso' : 'Estoque' }}
                     </a>
 
                     @if(auth()->user()->hasRole('admin'))
@@ -1261,39 +1273,39 @@
 
                     // Construir HTML detalhado
                     const detailsHtml = `
-                                    <div class="product-details">
-                                        <div class="mb-4">
-                                            <small class="text-muted d-block mb-1">Identificador</small>
-                                            <div class="id-cell fs-5">${id}</div>
-                                        </div>
-
-                                        <div class="mb-4">
-                                            <small class="text-muted d-block mb-1">Nome do Produto</small>
-                                            <div class="fs-4 fw-bold">${nome}</div>
-                                        </div>
-
-                                        <div class="row mb-4">
-                                            <div class="col-6">
-                                                <small class="text-muted d-block mb-1">Marca</small>
-                                                <div>${marca}</div>
+                                        <div class="product-details">
+                                            <div class="mb-4">
+                                                <small class="text-muted d-block mb-1">Identificador</small>
+                                                <div class="id-cell fs-5">${id}</div>
                                             </div>
-                                            <div class="col-6">
-                                                <small class="text-muted d-block mb-1">Quantidade</small>
-                                                <div class="status-badge ${quantidade.includes('0 ') ? 'status-low' : (parseInt(quantidade) > 50 ? 'status-high' : 'status-medium')}">${quantidade}</div>
+
+                                            <div class="mb-4">
+                                                <small class="text-muted d-block mb-1">Nome do Produto</small>
+                                                <div class="fs-4 fw-bold">${nome}</div>
+                                            </div>
+
+                                            <div class="row mb-4">
+                                                <div class="col-6">
+                                                    <small class="text-muted d-block mb-1">Marca</small>
+                                                    <div>${marca}</div>
+                                                </div>
+                                                <div class="col-6">
+                                                    <small class="text-muted d-block mb-1">Quantidade</small>
+                                                    <div class="status-badge ${quantidade.includes('0 ') ? 'status-low' : (parseInt(quantidade) > 50 ? 'status-high' : 'status-medium')}">${quantidade}</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="mb-4">
+                                                <small class="text-muted d-block mb-1">Setor</small>
+                                                <div>${setor === '—' ? '<span class="text-muted">Nenhum setor definido</span>' : setor}</div>
+                                            </div>
+
+                                            <div>
+                                                <small class="text-muted d-block mb-1">Descrição</small>
+                                                <div class="p-3 bg-light rounded" style="${$('body').hasClass('dark-mode') ? 'background-color: #1f2937 !important' : ''}">${descricao || '<span class="text-muted">Sem descrição</span>'}</div>
                                             </div>
                                         </div>
-
-                                        <div class="mb-4">
-                                            <small class="text-muted d-block mb-1">Setor</small>
-                                            <div>${setor === '—' ? '<span class="text-muted">Nenhum setor definido</span>' : setor}</div>
-                                        </div>
-
-                                        <div>
-                                            <small class="text-muted d-block mb-1">Descrição</small>
-                                            <div class="p-3 bg-light rounded" style="${$('body').hasClass('dark-mode') ? 'background-color: #1f2937 !important' : ''}">${descricao || '<span class="text-muted">Sem descrição</span>'}</div>
-                                        </div>
-                                    </div>
-                                `;
+                                    `;
 
                     // Atualizar o conteúdo do modal
                     contentArea.html(detailsHtml);
