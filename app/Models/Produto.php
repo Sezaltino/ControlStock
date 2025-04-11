@@ -12,9 +12,15 @@ class Produto extends Model
         'quantidade',
         'identificador',
         'marca',
-        'setor',
+        'setor_id',
         'descricao',
+        'status',
     ];
+    public function setor()
+    {
+        return $this->belongsTo(Setor::class);
+    }
 }
+
 
 

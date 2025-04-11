@@ -13,8 +13,7 @@ class UpdateSetoresSeeder extends Seeder
     public function run(): void
     {
         $setores = [
-            ['nome' => 'Vendas', 'descricao' => 'Equipe de Vendas'],
-            ['nome' => 'Vagas', 'descricao' => 'Equipe de Vagas'],
+            ['nome' => 'R.H', 'descricao' => 'Recursos Humanos'],
         ];
 
         foreach ($setores as $setor) {
